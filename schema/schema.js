@@ -22,12 +22,6 @@ const Author = require('../models/author');
 //   { name: 'Nick and Charlie', genre: 'Young Adult', id: '6', authorId: '3' },
 // ];
 
-// var authors = [
-//   { name: 'David Wong (Jason Pargin)', age: 46, id: '1' },
-//   { name: 'Anonymous (The Bourbon Kid)', age: 0, id: '2' },
-//   { name: 'Alice Oseman', age: 27, id: '3' },
-// ];
-
 const BookType = new GraphQLObjectType({
   name: 'Book',
   fields: () => ({
@@ -105,6 +99,22 @@ const Mutation = new GraphQLObjectType({
           age: args.age,
         });
         return author.save();
+      },
+    },
+    addBook: {
+      type: BookType,
+      args: {
+        name: { type: GraphQLString },
+        genre: { type: GraphQLString },
+        authorId: { type: GraphQLID },
+      },
+      resolve(parent, args) {
+        let book = new Book({
+          name: args.name,
+          genre: args.genre,
+          authorId: args.authorId,
+        });
+        return book.save();
       },
     },
   },
